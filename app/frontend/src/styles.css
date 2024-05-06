@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+.fondo{
+    background-color: #2b2b2b;
+}
+
+.caja{
+    background-color: #eaeaea;
+}
+
+
+body{
+    background-color: #2b2b2b;
+    color: #eaeaea;
+}
+
+p{
+    color: #2b2b2b;
+}
+
+input{
+    color: #2b2b2b;
+}
+
+label{
+    color: #2b2b2b;
+}
+
