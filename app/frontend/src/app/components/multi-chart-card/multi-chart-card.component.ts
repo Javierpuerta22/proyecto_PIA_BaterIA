@@ -40,9 +40,10 @@ export class MultiChartCardComponent implements OnChanges{
 
   ngOnChanges(changes: SimpleChanges){
     if (this.initialized){
-      var new_data = changes["data"].currentValue
-      this.chart.data = new_data
-      this.updateChart()
+      if (changes["id"]){
+        this.id = changes["id"].currentValue
+        this.updateChart()
+      }
     }
   }
 
