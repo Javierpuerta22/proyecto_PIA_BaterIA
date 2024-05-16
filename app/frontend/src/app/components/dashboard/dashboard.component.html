@@ -1,7 +1,7 @@
 <div class="container 100-wh">
-    <div class="row justify-content-evenly mt-3 align-items-center gx-4 gy-3 ">
+    <div class="row justify-content-evenly mt-3 align-items-center gx-2 gy-2 ">
         <div class="col-3">
-            <div class="row justify-content-center align-items-center text-center p-3 bg-info text-light rounded-1">
+            <div class="row justify-content-center align-items-center text-center p-2 bg-info text-light rounded-1">
                 <div class="col-10">
                     <p class=" text-light fs-4">Pilas totales</p>
                 </div>
@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-3">
-            <div class="row justify-content-center align-items-center text-center bg-success p-3 rounded-1">
+            <div class="row justify-content-center align-items-center text-center bg-success p-2 rounded-1">
                 <div class="col-10">
                     <p class=" text-light fs-4">Pilas Reutilizables</p>
                 </div>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="col-3">
-            <div class="row justify-content-center align-items-center text-center bg-danger p-3 rounded-1">
+            <div class="row justify-content-center align-items-center text-center bg-danger p-2 rounded-1">
                 <div class="col-10">
                     <p class=" text-light fs-4">Pilas NO reutilizables</p>
                 </div>
@@ -35,8 +35,8 @@
     </div>
 
     <div class="row justify-content-center align-items-center text-center pt-1 pb-1 mt-3 mb-4 gx-2 rounded-1 bg-light">
-        <div class="col-2" *ngFor="let id of tabs; let i = index">  
-            <button class="btn btn-info p-2 mt-2 mb-2" (click)="change_data(i)"> {{id}}</button>
+        <div class="col-2" *ngFor="let item of baterias.controls; let i = index">  
+            <button class="btn  p-2 mt-2 mb-2" (click)="change_data(i)" [ngClass]="{'btn-success': item.get('value')?.value, 'btn-danger': !item.get('value')?.value}" > {{item.get("id")?.value}}</button>
         </div>
     </div>
 
@@ -65,6 +65,57 @@
         <app-multi-chart-card [data]="datasets" [id]="actual_tab + '5'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
       </div>
     </div>
+
+
+
+    <div class="position-fixed bottom-0 end-0 p-2 pe-4">
+        <button class="btn btn-light" type="button"  (click)="openModal(template)">Enviar resultados finales</button>
+    </div>
+
+
+    <ng-template #template>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left" style="color: #2b2b2b;">Envia las decisiones finales</h4>
+          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form" (ngSubmit)="send_results()">
+                <div class="container">
+                    <div formArrayName="baterias">
+                        <div *ngFor="let item of baterias.controls; let i = index" [formGroupName]="i" class="row justify-content-center align-items-center text-center">
+                            <div class="col-6">
+                                <p class="fs-5">{{item.get("id")?.value}}</p>
+                            </div>
+                            <div class="col-6">
+                                <select name="result" id="result" formControlName="value" class="form-select">
+                                    <option [value]="true">Reciclar</option>
+                                    <option [value]="false">No reciclar</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center align-items-center text-center mt-3 mb-3">
+                        <div class="col-6">
+                            <button class="btn btn-danger" (click)="modalRef?.hide()" type="button">Cerrar</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-success" type="submit">Enviar</button>
+                        </div>
+
+                        <div class="col-10" *ngIf="msg_final">
+                            <p class="fs-5">{{msg_final}}</p>
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+            
+        </div>
+      </ng-template>
 
 
 </div>

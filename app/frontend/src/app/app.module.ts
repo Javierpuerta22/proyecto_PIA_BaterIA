@@ -11,6 +11,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MultiChartCardComponent } from './components/multi-chart-card/multi-chart-card.component';
 import { IgxTabsModule } from 'igniteui-angular';
+import { MainService } from './services/main.service';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 
 
 //I keep the new line
@@ -28,9 +32,14 @@ import { IgxTabsModule } from 'igniteui-angular';
     BrowserAnimationsModule,
     MatTooltipModule,
     MatTabsModule,
-    IgxTabsModule
+    IgxTabsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    ModalModule
   ],
-  providers: [],
+  providers: [
+    MainService, BsModalService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
