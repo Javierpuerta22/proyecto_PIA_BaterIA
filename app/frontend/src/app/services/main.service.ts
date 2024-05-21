@@ -1,12 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MainService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookie: CookieService) { }
+
+  // ---------------- cookie ----------------
+
+  set_cookie(name: string, value: string){
+    this.cookie.set(name, value)
+  }
+
+  get_cookie(name: string){
+    return this.cookie.get(name)
+  }
+
+  delete_cookie(name: string){
+    this.cookie.delete(name)
+  }
 
 
 

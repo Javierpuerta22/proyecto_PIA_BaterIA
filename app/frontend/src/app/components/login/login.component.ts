@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MainService } from 'src/app/services/main.service';
 
 @Component({
@@ -10,8 +11,8 @@ import { MainService } from 'src/app/services/main.service';
 export class LoginComponent {
 
   form!: FormGroup
-
-  constructor(private mainservice:MainService, private myformg:FormBuilder) {
+  error_msg: string = '';
+  constructor(private mainservice:MainService, private myformg:FormBuilder, private router:Router) {
     this.form = this.myformg.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -22,9 +23,29 @@ export class LoginComponent {
 
 
   send_form(data: any){
+
+    if (this.form.invalid) {
+      this.error_msg = 'Rellena los campos correctamente';
+    }
+
+    else{
+      if (data.username == 'admin' && data.password == 'admin') {
+        this.router.navigate(['/home']);
+        this.mainservice.set_cookie('registered', 'true');
+
+      }
+      else{
+        this.error_msg = 'Usuario o contraseña incorrectos';
+      }
+    }
+
+    /*
     this.mainservice.login(data).subscribe((res) => {
       console.log(res);
     })
+  }*/
   }
+
+
 
 }

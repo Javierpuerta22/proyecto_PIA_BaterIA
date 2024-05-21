@@ -20,6 +20,11 @@
                     <input type="password" class="form-control" id="exampleFormControlInput1" formControlName="password">
                 </div>
             </div>
+            <div class="row text-center justify-content-center align-items-center p-2" *ngIf="error_msg">
+                <div class="col-10">
+                    <p class="text-danger">{{error_msg}}</p>
+                </div>
+            </div>
 
             <div class="row text-center justify-content-center align-items-center p-2">
                 <div class="col-auto text-start">

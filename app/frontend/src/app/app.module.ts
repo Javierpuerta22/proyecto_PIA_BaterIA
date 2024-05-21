@@ -15,6 +15,8 @@ import { MainService } from './services/main.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { CookieService } from 'ngx-cookie-service';
+import { mainGuard } from './guard/main.guard';
 
 
 //I keep the new line
@@ -38,7 +40,7 @@ import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
     ModalModule
   ],
   providers: [
-    MainService, BsModalService
+    MainService, BsModalService, CookieService, mainGuard
   ],
   bootstrap: [AppComponent]
 })
