@@ -42,6 +42,7 @@ export class MultiChartCardComponent implements OnChanges{
     if (this.initialized){
       if (changes["id"]){
         this.id = changes["id"].currentValue
+        this.data = changes["data"].currentValue
         this.updateChart()
       }
     }

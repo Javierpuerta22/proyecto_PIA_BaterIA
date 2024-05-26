@@ -44,6 +44,11 @@ export class MainService {
 
   // ---------------- dashboard ----------------
 
+
+  get_results(){
+    return this.http.get('http://localhost:5000/dashboard')
+  }
+
   send_results(data:any){
     return this.http.post('http://localhost:5000/results', data)
   }

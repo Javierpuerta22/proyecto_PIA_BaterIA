@@ -42,27 +42,23 @@
 
     <div class="row justify-content-center align-items-center p-2 gx-5 gy-3">
       <div class="col-4">
-        <app-multi-chart-card [data]="datasets" [id]="actual_tab + '0'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
+        <app-multi-chart-card [data]="ploting_data[actual_tab]['I']" [id]="actual_tab + '0'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
       </div>
 
       <div class="col-4">
-        <app-multi-chart-card [data]="datasets" [id]="actual_tab + '1'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
+        <app-multi-chart-card [data]="ploting_data[actual_tab]['Qc']" [id]="actual_tab + '1'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
       </div>
 
       <div class="col-4">
-        <app-multi-chart-card [data]="datasets" [id]="actual_tab + '2'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
+        <app-multi-chart-card [data]="ploting_data[actual_tab]['Qd']" [id]="actual_tab + '2'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
       </div>
 
       <div class="col-4">
-        <app-multi-chart-card [data]="datasets" [id]="actual_tab + '3'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
+        <app-multi-chart-card [data]="ploting_data[actual_tab]['T']" [id]="actual_tab + '3'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
       </div>
 
       <div class="col-4">
-        <app-multi-chart-card [data]="datasets" [id]="actual_tab + '4'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
-      </div>
-
-      <div class="col-4">
-        <app-multi-chart-card [data]="datasets" [id]="actual_tab + '5'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
+        <app-multi-chart-card [data]="ploting_data[actual_tab]['V']" [id]="actual_tab + '4'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
       </div>
     </div>
 
