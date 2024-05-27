@@ -1,2 +1,4 @@
 /env
 *.csv
+*.pyc
+*.pkl
