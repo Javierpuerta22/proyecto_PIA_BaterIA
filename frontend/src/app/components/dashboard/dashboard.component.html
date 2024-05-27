@@ -35,12 +35,12 @@
     </div>
 
     <div class="row justify-content-center align-items-center text-center pt-1 pb-1 mt-3 mb-4 gx-2 rounded-1 bg-light">
-        <div class="col-2" *ngFor="let item of baterias.controls; let i = index">  
-            <button class="btn  p-2 mt-2 mb-2" (click)="change_data(i)" [ngClass]="{'btn-success': item.get('value')?.value, 'btn-danger': !item.get('value')?.value}" > {{item.get("id")?.value}}</button>
+        <div class="col-2" *ngFor="let item of tabs; let i = index">  
+            <button class="btn  p-2 mt-2 mb-2" (click)="change_data(i)" [ngClass]="{'btn-success': results_baterias[item], 'btn-danger': !results_baterias[item]}" > {{item}}</button>
         </div>
     </div>
 
-    <div class="row justify-content-center align-items-center p-2 gx-5 gy-3">
+    <div class="row justify-content-center align-items-center p-2 gx-5 gy-3" *ngIf="ploting_data">
       <div class="col-4">
         <app-multi-chart-card [data]="ploting_data[actual_tab]['I']" [id]="actual_tab + '0'" [background]="'#5b5b5b'" [titulo]="name"></app-multi-chart-card>
       </div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, TemplateRef } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { MainService } from 'src/app/services/main.service';
@@ -17,6 +17,7 @@ export class DashboardComponent implements AfterViewInit{
 
   results_baterias: any
   ploting_data:any
+  cantidades:any
 
 
   constructor(private modalService: BsModalService, private mainservice: MainService, private myformg: FormBuilder) {
@@ -43,29 +44,32 @@ export class DashboardComponent implements AfterViewInit{
     }
   }
 
-  ngAfterViewInit(): void {
-
-    this.results_baterias = {"1": true, 
-      "2": false,
-      "3": true,
-      "4": false
-    }
-
+  ngAfterViewInit() {
+    //this.initForm();
+    console.log("patata")
     this.mainservice.get_results().subscribe((res:any) => {
-      this.results_baterias = res["results"];
-      this.tabs = res["plots"].keys;
+      console.log(res)
+      this.tabs = res["ids"];
+      console.log(this.tabs)
       this.actual_tab = this.tabs[0];
+      this.name = this.tabs[0];
+      this.results_baterias = res["resultados"]
+      this.pilas = res["cantidades_resultados"]
 
 
       this.ploting_data = res["plots"];
 
 
       this.initForm();
+    }, (error) => {
+      console.log(error)
     })
+
   }
 
 
-  pilas: any = [3, 1, 2];
+
+  pilas: any = [0,0,0];
   tabs:any
 
   actual_tab:any;
@@ -74,7 +78,7 @@ export class DashboardComponent implements AfterViewInit{
 
 
   change_data(id:any){
-    this.actual_tab = id
+    this.actual_tab = this.tabs[id]
     this.name = this.tabs[id]
   }
 

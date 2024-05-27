@@ -1,5 +1,5 @@
 <div class="container-fluid fondo text-center " style="height: 100vh;">
-    <form [formGroup]="form">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div  class="container-fluid  text-center caja rounded-1 p-4 shadow" style=" position: absolute; top: 0; left: 0; bottom: 0; right: 0; margin: auto; height: fit-content; width: 30%;">
 
             <div class="row text-center justify-content-center align-items-center">
@@ -11,7 +11,10 @@
             <div class="row text-center justify-content-center align-items-center p-2 mt-3">
                 <div class="col-10 text-start">
                     <label for="exampleFormControlInput1" class="form-label fs-5">Archivo CSV con datos de las baterías</label>
-                    <input type="file" class="form-control" id="exampleFormControlInput1" formControlName="file">
+                    <input type="file" class="form-control" (change)="onFileChange($event)">
+                </div>
+                <div class="col-10" *ngIf="msg_error">
+                    <p class="fs-5 text-danger">{{msg_error}}</p>
                 </div>
             </div>
 

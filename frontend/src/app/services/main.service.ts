@@ -28,7 +28,7 @@ export class MainService {
   // ---------------- login ----------------
 
   login(data: any){ 
-    return this.http.post('http://localhost:5000/login', data)
+    return this.http.post('http://127.0.0.1:8000/login', data)
   }
 
 
@@ -38,7 +38,7 @@ export class MainService {
     const formData = new FormData();
     formData.append('file', file, file.name);
 
-    return this.http.post('http://localhost:5000/upload', formData)
+    return this.http.post('http://127.0.0.1:8000/upload', formData)
   }
 
 
@@ -46,11 +46,11 @@ export class MainService {
 
 
   get_results(){
-    return this.http.get('http://localhost:5000/dashboard')
+    return this.http.get('http://127.0.0.1:8000/dashboard')
   }
 
   send_results(data:any){
-    return this.http.post('http://localhost:5000/results', data)
+    return this.http.post('http://127.0.0.1:8000/results', data)
   }
 
 }
