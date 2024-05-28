@@ -157,7 +157,7 @@ def creating_true_false_thresholds(df:pd.DataFrame, column:str, i:int):
 
 
 def formating_data_to_frontend(df:pd.DataFrame, column: str, i:int, df_apoyo:pd.DataFrame = None):
-    data_formated = {"labels": [round(x,2) for x in df["t"].values],
+    data_formated = {"labels": [x for x in range(0, len(df[column].values))],
                      "datasets": [{"label": column,
                                    "data": [round(x, 3) for x in df[column].values],
                                    "fill": True,
@@ -165,28 +165,9 @@ def formating_data_to_frontend(df:pd.DataFrame, column: str, i:int, df_apoyo:pd.
                                    "backgroundColor": colores[i]}]}
     
     if df_apoyo is not None:
-        dataset = {
-            "label":"Media baterias recicables",
-            "data": [round(x, 3) for x in df_apoyo[column].values],
-            "type": "line",
-            "backgroundColor": "#709775",
-            "borderColor": "#709775",
-            "fill": False,
-            "radius": 0
-        }
         
-        dataset2 = {
-            "label":"Media baterias NO recicables",
-            "data": [round(x, 3) for x in df_apoyo[column].values],
-            "type": "line",
-            "backgroundColor": "#D62246",
-            "borderColor": "#D62246",
-            "fill": False,
-            "radius": 0
-        }
-        
-        data_formated["datasets"].append(dataset)
-        data_formated["datasets"].append(dataset2)
+        data_formated["datasets"].append(means["Fail"][column])
+        data_formated["datasets"].append(means["NOT"][column])
     
     return data_formated
 
@@ -206,6 +187,43 @@ def load_models()-> Model:
     modelo_final = Model(VAEmodel, model, label_encoder)
     
     return modelo_final
+
+
+def create_mean_to_frontend(df_apoyo:pd.DataFrame, column, dicted:dict):
+    res = {}
+    dataset = {
+            "label":"Media baterias recicables",
+            "data": [round(x, 3) for x in df_apoyo.query(f"Predictions == 'NOT'")[column].values],
+            "type": "line",
+            "backgroundColor": "#709775",
+            "borderColor": "#709775",
+            "fill": False,
+            "radius": 0
+        }
+        
+    dataset2 = {
+            "label":"Media baterias NO recicables",
+            "data": [round(x, 3) for x in df_apoyo.query("Predictions == 'Fail'")[column].values],
+            "type": "line",
+            "backgroundColor": "#D62246",
+            "borderColor": "#D62246",
+            "fill": False,
+            "radius": 0
+        }
+    
+    dicted["Fail"][column] = dataset2
+    dicted["NOT"][column] = dataset
+    return dicted
+
+"""means = {"Fail": {}, "NOT": {}}
+
+df_apoyo = pd.read_csv('uploads/predictions_means.csv', sep=',', encoding='utf-8')
+
+for col in df_apoyo.columns:
+    if col != "Predictions" and col != "t":
+        means = create_mean_to_frontend(df_apoyo, col, means)
+        print(col)
+"""
 
 
 @dashboard.route('/upload', methods=['POST'])
@@ -244,8 +262,7 @@ def dashboard_route():
     
     predictions, df = model.predict_multiple('uploads/last_file.csv')
     df = pd.concat(df)
-    columns = df.columns
-    
+    columns = df.columns    
     
     print(predictions)
     
@@ -259,10 +276,11 @@ def dashboard_route():
             res["plots"][id_uniq] = {}
             i = 0
             for column in columns:
-                if column != "Battery_ID" and column != "pred":
+                if column != "Battery_ID" and column != "pred" and column != "t":
                     data_formated = formating_data_to_frontend(df_id, column, i)
                     res["plots"][id_uniq][column] = data_formated
                     i += 1
+            print(id_uniq)
                     
     else:
         res["plots"]["1"] = {}

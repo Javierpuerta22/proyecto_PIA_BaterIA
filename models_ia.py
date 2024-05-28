@@ -1,40 +1,26 @@
 import numpy as np
 import pandas as pd
 import pickle as pkl
+from tensorflow.keras.models import load_model
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.autograd import Variable
 
 class Model():
-    def __init__(self, VAEmodel, Classifier, label_encoder, input_dim=1000):
+    def __init__(self, VAEmodel, Classifier, label_encoder, input_dim=400):
         self.VAEmodel = VAEmodel
         self.Classifier = Classifier
         self.input_dim = input_dim
         self.label_encoder = label_encoder
 
     # Auxiliary functions
-    def treat_data(data, desired_length=1000):
-        # Check if 'V' is in the DataFrame
-        if 'V' in data:
+    def treat_data(self, data, desired_length=400):
+        # Check if 'Qd' is in the DataFrame
+        if 'Qd' in data:
             # Convert the pandas Series to a list
-            data_list = data['V'].tolist()
-            current_length = len(data_list)
-
-            if current_length < desired_length:
-                # Pad with zeros if shorter than desired length
-                data_list.extend([0] * (desired_length - current_length))
-            elif current_length > desired_length:
-                # Truncate if longer than desired length
-                data_list = data_list[:desired_length]
-
-        return data_list
-
-    def treat_data(self, data, desired_length=1000):
-        # Check if 'V' is in the DataFrame
-        if 'V' in data:
-            # Convert the pandas Series to a list
-            data_list = data['V'].tolist()
+            data_list = data['Qd'].tolist()
             current_length = len(data_list)
 
             if current_length < desired_length:
@@ -53,7 +39,7 @@ class Model():
 
         # Convert data to NumPy array and normalize to [0, 1]
         data_array = np.array(data_list_of_lists)
-        max_value = 3.669425 #max(np.max(V_notfail), np.max(V_fail)) Normalization parameters must remain the same as in training
+        max_value = 1.0974227
         data_array_normalized = data_array.astype(float) / max_value  # Normalize to [0, 1]
 
         # Convert NumPy array to PyTorch tensor
@@ -96,13 +82,14 @@ class Model():
             # Append the filtered DataFrame to the list
             separated_dfs.append(filtered_df)
         # Generate the prediction for each
-        predictions = []
+        predictions = {}
         for battery_data in separated_dfs:
             prediction = self.predict(battery_data)
-            predictions.append(prediction)
+            predictions[battery_data["Battery_ID"].values[0]] = prediction
             print(prediction)
-        return predictions
-    
+        return predictions, separated_dfs
+
+
 class VAE(nn.Module):
     def __init__(self, input_size, latent_size):
         super(VAE, self).__init__()
@@ -136,3 +123,37 @@ class VAE(nn.Module):
         z = self.reparameterize(mean, logvar)
         return self.decode(z), mean, logvar
 
+# Define the loss function
+def vae_loss(recon_x, x, mu, logvar):
+    BCE = F.binary_cross_entropy(recon_x, x, reduction='sum')
+    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+    return BCE + KLD
+
+
+def load_models()-> Model:
+        # Load saved models
+    
+    model = load_model('./uploads/MODELO_NN.h5')
+
+ 
+    VAEmodel = VAE(400, 5)
+    VAEmodel.load_state_dict(torch.load('./uploads/MODELO_VAE.pth'))
+
+        
+    with open('./uploads/LABEL_ENCODER.pkl', 'rb') as file:
+        label_encoder = pkl.load(file)
+        
+    modelo_final = Model(VAEmodel, model, label_encoder)
+    
+    return modelo_final
+
+
+model = load_models()
+
+predictons, separated_dfs = model.predict_multiple('./APPmedias.csv')
+
+general = pd.concat(separated_dfs)
+
+general['Predictions'] = general['Battery_ID'].map(predictons)
+
+general.to_csv('predictions.csv', encoding='utf-8')
