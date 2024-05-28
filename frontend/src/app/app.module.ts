@@ -12,11 +12,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MultiChartCardComponent } from './components/multi-chart-card/multi-chart-card.component';
 import { IgxTabsModule } from 'igniteui-angular';
 import { MainService } from './services/main.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { CookieService } from 'ngx-cookie-service';
 import { mainGuard } from './guard/main.guard';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 //I keep the new line
@@ -26,7 +27,8 @@ import { mainGuard } from './guard/main.guard';
     LoginComponent,
     PushDataComponent,
     DashboardComponent,
-    MultiChartCardComponent
+    MultiChartCardComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +42,12 @@ import { mainGuard } from './guard/main.guard';
     ModalModule
   ],
   providers: [
-    MainService, BsModalService, CookieService, mainGuard
+    MainService, BsModalService, CookieService, mainGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingComponent,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

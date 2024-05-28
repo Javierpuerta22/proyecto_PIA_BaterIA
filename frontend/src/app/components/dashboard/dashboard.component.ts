@@ -85,14 +85,8 @@ export class DashboardComponent implements AfterViewInit{
 
   send_results(){
 
-    const result = this.form.value.items.reduce((acc: any, item: any) => {
-      acc[item.id] = item.value;
-      return acc;
-    }, {});
-
-
-    this.mainservice.send_results(result).subscribe((res:any) => {
-      this.msg_final = res["msg"]
+    this.mainservice.send_results(this.form.value).subscribe((res:any) => {
+      this.msg_final = res["message"]
     })
   }
 
