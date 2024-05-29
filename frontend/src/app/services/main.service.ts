@@ -23,6 +23,11 @@ export class MainService {
     this.cookie.delete(name)
   }
 
+  logout(){
+    this.cookie.deleteAll()
+    localStorage.clear()
+  }
+
 
 
   // ---------------- login ----------------
@@ -51,6 +56,13 @@ export class MainService {
 
   send_results(data:any){
     return this.http.post('http://127.0.0.1:8000/results', data)
+  }
+
+
+  // ---------------- historial ----------------
+
+  get_historial(){
+    return this.http.get('http://127.0.0.1:8000/historial')
   }
 
 }

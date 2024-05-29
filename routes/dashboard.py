@@ -156,7 +156,7 @@ def creating_true_false_thresholds(df:pd.DataFrame, column:str, i:int):
 
 
 
-def formating_data_to_frontend(df:pd.DataFrame, column: str, i:int, df_apoyo:pd.DataFrame = None):
+def formating_data_to_frontend(df:pd.DataFrame, column: str, i:int):
     data_formated = {"labels": [x for x in range(0, len(df[column].values))],
                      "datasets": [{"label": column,
                                    "data": [round(x, 3) for x in df[column].values],
@@ -164,10 +164,6 @@ def formating_data_to_frontend(df:pd.DataFrame, column: str, i:int, df_apoyo:pd.
                                    "borderColor": "rgb(75, 192, 192)",
                                    "backgroundColor": colores[i]}]}
     
-    if df_apoyo is not None:
-        
-        data_formated["datasets"].append(means["Fail"][column])
-        data_formated["datasets"].append(means["NOT"][column])
     
     return data_formated
 
@@ -189,12 +185,10 @@ def load_models()-> Model:
     return modelo_final
 
 
-def create_mean_to_frontend(df_apoyo:pd.DataFrame, column, dicted:dict):
-    res = {}
+def create_mean_to_frontend(df_apoyo:pd.DataFrame,df_apoyo_fail:pd.DataFrame , column, dicted:dict):
     dataset = {
-            "label":"Media baterias recicables",
-            "data": [round(x, 3) for x in df_apoyo.query(f"Predictions == 'NOT'")[column].values],
-            "type": "line",
+            "label":"Baterías reutilizables",
+            "data": [round(x, 3) for x in df_apoyo[column].values],
             "backgroundColor": "#709775",
             "borderColor": "#709775",
             "fill": False,
@@ -202,28 +196,21 @@ def create_mean_to_frontend(df_apoyo:pd.DataFrame, column, dicted:dict):
         }
         
     dataset2 = {
-            "label":"Media baterias NO recicables",
-            "data": [round(x, 3) for x in df_apoyo.query("Predictions == 'Fail'")[column].values],
-            "type": "line",
+            "label":"Baterías NO reutilizables",
+            "data": [round(x, 3) for x in df_apoyo_fail[column].values],
             "backgroundColor": "#D62246",
             "borderColor": "#D62246",
             "fill": False,
             "radius": 0
         }
     
-    dicted["Fail"][column] = dataset2
-    dicted["NOT"][column] = dataset
+    data_formated = {"labels": [x for x in range(0, len(df_apoyo[column].values))],
+                     "datasets": [dataset, dataset2]}
+    
+    dicted[column] = data_formated
     return dicted
 
-"""means = {"Fail": {}, "NOT": {}}
 
-df_apoyo = pd.read_csv('uploads/predictions_means.csv', sep=',', encoding='utf-8')
-
-for col in df_apoyo.columns:
-    if col != "Predictions" and col != "t":
-        means = create_mean_to_frontend(df_apoyo, col, means)
-        print(col)
-"""
 
 
 @dashboard.route('/upload', methods=['POST'])
@@ -302,6 +289,25 @@ def dashboard_route():
     res["cantidades_resultados"] = cantidades
     
     return jsonify(res)
+
+@dashboard.route('/historial', methods=['GET', 'POST'])
+def historial():
+    means = {}
+
+    df_apoyo = pd.read_csv('uploads/predictions_means.csv', sep=',', encoding='utf-8')
+    
+    df_apoyo_fail = df_apoyo.query("Predictions == 'Fail'").head(400)
+    df_apoyo = df_apoyo.query("Predictions == 'NOT'").head(400)
+
+    for col in df_apoyo.columns:
+        if col != "Predictions" and col != "t":
+            means = create_mean_to_frontend(df_apoyo, df_apoyo_fail, col, means)
+            print(col)
+            
+    print(df_apoyo_fail.shape, df_apoyo.shape)
+            
+    return jsonify(means = means)
+
 
 @dashboard.route('/results', methods=['POST'])
 def send_final():

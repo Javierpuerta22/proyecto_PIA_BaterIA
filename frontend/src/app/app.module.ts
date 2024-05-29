@@ -18,6 +18,8 @@ import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { CookieService } from 'ngx-cookie-service';
 import { mainGuard } from './guard/main.guard';
 import { LoadingComponent } from './components/loading/loading.component';
+import { NavigatorComponent } from './components/navigator/navigator.component';
+import { HistorialComponent } from './components/historial/historial.component';
 
 
 //I keep the new line
@@ -28,7 +30,9 @@ import { LoadingComponent } from './components/loading/loading.component';
     PushDataComponent,
     DashboardComponent,
     MultiChartCardComponent,
-    LoadingComponent
+    LoadingComponent,
+    NavigatorComponent,
+    HistorialComponent
   ],
   imports: [
     BrowserModule,

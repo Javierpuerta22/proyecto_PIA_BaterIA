@@ -19,6 +19,12 @@ export class AppComponent {
     return this.service.get_cookie('registered');
   }
 
+  is_data(){
+    return this.service.get_cookie('data');
+  }
+
+
+
   logout(){
     this.service.delete_cookie('registered');
     this.router.navigate(['/login']);

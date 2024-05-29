@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { route_to_images } from 'src/app/app.component';
@@ -9,7 +9,7 @@ import { MainService } from 'src/app/services/main.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
 
   form!: FormGroup
   error_msg: string = '';
@@ -22,6 +22,12 @@ export class LoginComponent {
 
    
    route_image = route_to_images + "logo.jpg"
+
+   ngAfterViewInit(): void {
+       this.mainservice.logout();
+   }
+
+
 
   send_form(data: any){
 

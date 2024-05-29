@@ -1,9 +1,9 @@
 <div class="container 100-wh" *ngIf="results_baterias">
     <div class="row justify-content-evenly mt-3 align-items-center gx-2 gy-2 ">
         <div class="col-3">
-            <div class="row justify-content-center align-items-center text-center p-2 generaal text-light rounded-1">
+            <div class="row justify-content-center align-items-center text-center p-2 generaal text-light rounded-1" style="border: 1px solid #eaeaea;">
                 <div class="col-10">
-                    <p class=" text-light fs-4">Pilas totales</p>
+                    <p class=" text-light fs-4">Baterías totales</p>
                 </div>
                 <div class="col-10">
                     <p class=" text-light fs-1">{{pilas[0]}}</p>
@@ -12,9 +12,9 @@
         </div>
 
         <div class="col-3">
-            <div class="row justify-content-center align-items-center text-center p-2 rounded-1 verdeee">
+            <div class="row justify-content-center align-items-center text-center p-2 rounded-1 verdeee" style="border: 1px solid #eaeaea;">
                 <div class="col-10">
-                    <p class=" text-light fs-4">Pilas Reutilizables</p>
+                    <p class=" text-light fs-4">Baterías reutilizables</p>
                 </div>
                 <div class="col-10">
                     <p class=" text-light fs-1">{{pilas[1]}}</p>
@@ -23,9 +23,9 @@
         </div>
 
         <div class="col-3">
-            <div class="row justify-content-center align-items-center text-center rojooo p-2 rounded-1">
-                <div class="col-10">
-                    <p class=" text-light fs-4">Pilas NO reutilizables</p>
+            <div class="row justify-content-center align-items-center text-center rojooo p-2 rounded-1" style="border: 1px solid #eaeaea;">
+                <div class="col-12">
+                    <p class=" text-light fs-4">Baterías NO reutilizables</p>
                 </div>
                 <div class="col-10">
                     <p class=" text-light fs-1">{{pilas[2]}}</p>
@@ -42,23 +42,23 @@
 
     <div class="row justify-content-center align-items-center p-2 gx-5 gy-3" *ngIf="ploting_data">
       <div class="col-4">
-        <app-multi-chart-card [data]="ploting_data[actual_tab]['I']" [id]="actual_tab + '0'" [background]="'#5b5b5b'" [titulo]="'Intensidad (A): ' + name"></app-multi-chart-card>
+        <app-multi-chart-card [legend]="false" [data]="ploting_data[actual_tab]['I']" [id]="actual_tab + '0'" [background]="'#4C4452'" [titulo]="'Intensidad (A): ' + name"></app-multi-chart-card>
       </div>
 
       <div class="col-4">
-        <app-multi-chart-card [data]="ploting_data[actual_tab]['Qc']" [id]="actual_tab + '1'" [background]="'#5b5b5b'" [titulo]="'Capacidad de Carga (Ah): ' +name"></app-multi-chart-card>
+        <app-multi-chart-card [legend]="false" [data]="ploting_data[actual_tab]['Qc']" [id]="actual_tab + '1'" [background]="'#4C4452'" [titulo]="'Capacidad de Carga (Ah): ' +name"></app-multi-chart-card>
       </div>
 
       <div class="col-4">
-        <app-multi-chart-card [data]="ploting_data[actual_tab]['Qd']" [id]="actual_tab + '2'" [background]="'#5b5b5b'" [titulo]="'Capacidad de Descarga (Ah): ' +name"></app-multi-chart-card>
+        <app-multi-chart-card  [legend]="false" [data]="ploting_data[actual_tab]['Qd']" [id]="actual_tab + '2'" [background]="'#4C4452'" [titulo]="'Capacidad de Descarga (Ah): ' +name"></app-multi-chart-card>
       </div>
 
       <div class="col-4">
-        <app-multi-chart-card [data]="ploting_data[actual_tab]['T']" [id]="actual_tab + '3'" [background]="'#5b5b5b'" [titulo]="'Temperatura (ºC): ' +name"></app-multi-chart-card>
+        <app-multi-chart-card [legend]="false" [data]="ploting_data[actual_tab]['T']" [id]="actual_tab + '3'" [background]="'#4C4452'" [titulo]="'Temperatura (ºC): ' +name"></app-multi-chart-card>
       </div>
 
       <div class="col-4">
-        <app-multi-chart-card [data]="ploting_data[actual_tab]['V']" [id]="actual_tab + '4'" [background]="'#5b5b5b'" [titulo]="'Voltaje (V): ' +name"></app-multi-chart-card>
+        <app-multi-chart-card [legend]="false" [data]="ploting_data[actual_tab]['V']" [id]="actual_tab + '4'" [background]="'#4C4452'" [titulo]="'Voltaje (V): ' +name"></app-multi-chart-card>
       </div>
     </div>
 
@@ -66,7 +66,6 @@
 
     <div class="position-fixed bottom-0 start-0 p-2 pe-4">
         <button class="btn btn-light" type="button"  (click)="openModal(template)">Enviar resultados finales</button>
-        <button class="btn btn-secondary ms-3" type="button" (click)="volver_atras()">Enviar datos</button>
     </div>
 
 

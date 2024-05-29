@@ -1,5 +1,21 @@
-<router-outlet></router-outlet>
 
-<div class="position-fixed bottom-0 end-0 p-2" *ngIf="is_logged()">
+<div *ngIf="!is_data()">
+    <router-outlet></router-outlet>
+</div>
+
+<div class="m-0" *ngIf="is_data()">
+    <div class="row justify-content-center align-items-center" style="width: 100wh;">
+        <div class="col-12">
+            <app-navigator></app-navigator>
+        </div>
+        <div class="col-12">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="position-fixed bottom-0 end-0 p-2" *ngIf="is_logged() && !is_data()">
     <button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
 </div>

@@ -37,6 +37,7 @@ export class PushDataComponent {
       // Enviar el archivo al backend
      this.mainservice.send_file(this.file).subscribe((res) => {
         console.log(res);
+        this.mainservice.set_cookie('data', 'true');
         this.route.navigate(['/dashboard']);
         
       },
