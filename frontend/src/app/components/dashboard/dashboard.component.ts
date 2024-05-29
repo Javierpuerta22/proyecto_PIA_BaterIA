@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Route, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { MainService } from 'src/app/services/main.service';
 
@@ -20,7 +21,7 @@ export class DashboardComponent implements AfterViewInit{
   cantidades:any
 
 
-  constructor(private modalService: BsModalService, private mainservice: MainService, private myformg: FormBuilder) {
+  constructor(private modalService: BsModalService, private mainservice: MainService, private myformg: FormBuilder, private router: Router) {
     this.form = this.myformg.group({
       baterias: this.myformg.array([])
     });
@@ -88,6 +89,10 @@ export class DashboardComponent implements AfterViewInit{
     this.mainservice.send_results(this.form.value).subscribe((res:any) => {
       this.msg_final = res["message"]
     })
+  }
+
+  volver_atras(){
+    this.router.navigate(["/home"])
   }
 
 

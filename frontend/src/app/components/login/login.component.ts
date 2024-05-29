@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { route_to_images } from 'src/app/app.component';
 import { MainService } from 'src/app/services/main.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class LoginComponent {
    }
 
    
-
+   route_image = route_to_images + "logo.jpg"
 
   send_form(data: any){
 
